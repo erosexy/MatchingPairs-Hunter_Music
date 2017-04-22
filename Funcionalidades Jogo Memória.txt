@@ -1,0 +1,15 @@
+Jogo da memória: 3 dificuldades (cada um é um tema)
+
+fácil: 12 pares (tema: bichos)
+
+médio: 18 pares (tema: comidas)
+
+difícil: 24 pares (tema: conto de fadas)
+
+Do start traz os botões de dificuldade
+
+Trocar "number of matches" por número de pares encontrados
+
+Colocar número de tentativa no final
+
+Mostrar cartes antes do jogo começar
