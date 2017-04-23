@@ -11,7 +11,10 @@ public class GameManagerMedium : MonoBehaviour {
     public Sprite cardBack;
     public GameObject[] cards;
     public GameObject gameOverWindow;
+    private GameObject bgm;
     public Text matchText, gameTimeText;
+
+    public AudioSource flipCard, notPair, pair;
 
     private int nPlays = 0;
     private float playedTime = 0.0f, showCardsTime = 3.0f;
@@ -34,8 +37,22 @@ public class GameManagerMedium : MonoBehaviour {
             else
                 checkCards();
         }
+
+        //encontra o objeto que tem a música de fundo
+        bgm = GameObject.Find("BackgroundMusic");
+        //se a música estiver parada/pausada
+        if (!bgm.GetComponent<AudioSource>().isPlaying)
+        {
+            //a música toca de novo
+            bgm.GetComponent<AudioSource>().Play();
+            bgm.GetComponent<AudioSource>().volume = 0.5f;
+        }
+
         playedTime += Time.deltaTime;
-        gameTimeText.text = "Game starts in: " + (showCardsTime - Mathf.RoundToInt(playedTime)).ToString();
+        if (!gameTimeText.IsDestroyed())
+        {
+            gameTimeText.text = "Game starts in: " + (showCardsTime - Mathf.RoundToInt(playedTime)).ToString();
+        }
         if (Mathf.RoundToInt(playedTime) == 4.0f)
         {
             Destroy(gameTimeText);
@@ -104,7 +121,8 @@ public class GameManagerMedium : MonoBehaviour {
         nPlays++;
 
         if (cards[c[0]].GetComponent<Card>().cardValue == cards[c[1]].GetComponent<Card>().cardValue)
-        { 
+        {
+            pair.Play();
             x = 2;
             //_matches--;
             _matchesGot++;
@@ -123,6 +141,10 @@ public class GameManagerMedium : MonoBehaviour {
                 gameOverWindow.GetComponent<HelpWindow>().GetGameMode("Medium");
                 //SceneManager.LoadScene("Menu");
             }
+        }
+        else
+        {
+            notPair.Play();
         }
 
         for (int i = 0; i < c.Count; i++)
@@ -148,5 +170,16 @@ public class GameManagerMedium : MonoBehaviour {
             cards[i].GetComponent<Button>().interactable = true;
         }
         print("start");
+    }
+
+    void SaveScore(string Score)
+    {
+        //PlayerPrefs.SetString("Score Hard", topEasterEggsText.GetComponent<Text>().text);
+        PlayerPrefs.SetString("Score Hard", nPlays.ToString());
+    }
+
+    string GetScore()
+    {
+        return PlayerPrefs.GetString("Score Medium");
     }
 }

@@ -11,7 +11,10 @@ public class GameManagerHard : MonoBehaviour {
     public Sprite cardBack;
     public GameObject[] cards;
     public GameObject gameOverWindow;
+    private GameObject bgm;
     public Text matchText, gameTimeText;
+
+    public AudioSource flipCard, notPair, pair;
 
     private bool _init = false;
     private int _matches = 24, _matchesGot = 0;
@@ -34,9 +37,23 @@ public class GameManagerHard : MonoBehaviour {
             else
                 checkCards();
         }
+
+        //encontra o objeto que tem a música de fundo
+        bgm = GameObject.Find("BackgroundMusic");
+        //se a música estiver parada/pausada
+        if (!bgm.GetComponent<AudioSource>().isPlaying)
+        {
+            //a música toca de novo
+            bgm.GetComponent<AudioSource>().Play();
+            bgm.GetComponent<AudioSource>().volume = 0.5f;
+        }
+
         playedTime += Time.deltaTime;
         //gameTimeText.text = "Seconds played: " + Mathf.RoundToInt(playedTime).ToString();
-        gameTimeText.text = "Game starts in: " + (showCardsTime - Mathf.RoundToInt(playedTime)).ToString();
+        if (!gameTimeText.IsDestroyed())
+        {
+            gameTimeText.text = "Game starts in: " + (showCardsTime - Mathf.RoundToInt(playedTime)).ToString();
+        }
         if (Mathf.RoundToInt(playedTime) == 4.0f)
         {
             Destroy(gameTimeText);
@@ -105,7 +122,8 @@ public class GameManagerHard : MonoBehaviour {
         nPlays++;
 
         if (cards[c[0]].GetComponent<Card>().cardValue == cards[c[1]].GetComponent<Card>().cardValue)
-        { 
+        {
+            pair.Play();
             x = 2;
             //_matches--;
             _matchesGot++;
@@ -119,6 +137,10 @@ public class GameManagerHard : MonoBehaviour {
                 gameOverWindow.GetComponent<HelpWindow>().GetGameMode("Hard");
                 //SceneManager.LoadScene("Menu");
             }
+        }
+        else
+        {
+            notPair.Play();
         }
 
         for (int i = 0; i < c.Count; i++)
@@ -144,5 +166,16 @@ public class GameManagerHard : MonoBehaviour {
             cards[i].GetComponent<Button>().interactable = true;
         }
         print("start");
+    }
+
+    void SaveScore(string Score)
+    {
+        //PlayerPrefs.SetString("Score Hard", topEasterEggsText.GetComponent<Text>().text);
+        PlayerPrefs.SetString("Score Hard", nPlays.ToString());
+    }
+
+    string GetScore()
+    {
+        return PlayerPrefs.GetString("Score Hard");
     }
 }

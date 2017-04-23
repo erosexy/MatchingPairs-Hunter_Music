@@ -19,10 +19,14 @@ public class Card : MonoBehaviour {
     private Sprite _cardBack;
     private Sprite _cardFace;
 
+    private AudioSource flipCardSfx;
+
     private GameObject _manager;
     public static int cartasViradas = 0;
     public static string nome = "";
     public static bool checaCartas = true;
+
+    private bool isFlipSfx = false;
 
     void Start()
     {
@@ -43,6 +47,8 @@ public class Card : MonoBehaviour {
         _cardBack = _manager.GetComponent<GameManagerEasy>().getCardBack();
         _cardFace = _manager.GetComponent<GameManagerEasy>().getCardFace(_cardValue);
 
+        flipCardSfx = _manager.GetComponent<GameManagerEasy>().flipCard;
+
         flipCard();
 
         StartCoroutine(ShowCards());
@@ -52,6 +58,8 @@ public class Card : MonoBehaviour {
     {
         _cardBack = _manager.GetComponent<GameManagerMedium>().getCardBack();
         _cardFace = _manager.GetComponent<GameManagerMedium>().getCardFace(_cardValue);
+
+        flipCardSfx = _manager.GetComponent<GameManagerMedium>().flipCard;
 
         flipCard();
 
@@ -63,6 +71,8 @@ public class Card : MonoBehaviour {
         _cardBack = _manager.GetComponent<GameManagerHard>().getCardBack();
         _cardFace = _manager.GetComponent<GameManagerHard>().getCardFace(_cardValue);
 
+        flipCardSfx = _manager.GetComponent<GameManagerHard>().flipCard;
+
         flipCard();
 
         StartCoroutine(ShowCards());
@@ -70,6 +80,11 @@ public class Card : MonoBehaviour {
 
     public void flipCard()
     {
+        if (isFlipSfx)
+        {
+            flipCardSfx.Play();
+        }
+        isFlipSfx = true;
         checaCartas = true;
         if (cartasViradas == 0)
         {
