@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuBehavior : MonoBehaviour {
     public GameObject[] difficultyButtons;
+    public GameObject glosssaryButton;
 
     void Awake()
     {
@@ -41,6 +42,11 @@ public class MenuBehavior : MonoBehaviour {
                 SceneManager.LoadScene("Hard");
                 Debug.Log("Hard mode!");
                 print("Hard mode!");
+                break;
+            case (5):
+                SceneManager.LoadScene("FoodInfo");
+                Debug.Log("FoodInfo!");
+                print("Glossary!");
                 break;
         }
     }
