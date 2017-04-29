@@ -4,13 +4,32 @@ using UnityEngine;
 
 public class FoodInfo : MonoBehaviour {
 
-	// Use this for initialization
+    public GameObject listEasy, listMedium, listHard;
+
+    public void ShowEasyCards()
+    {
+        listEasy.SetActive(true);
+        listMedium.SetActive(false);
+        listHard.SetActive(false);
+    }
+
+    public void ShowMediumCards()
+    {
+        listMedium.SetActive(true);
+        listEasy.SetActive(false);
+        listHard.SetActive(false);
+    }
+
+    public void ShowHardCards()
+    {
+        listHard.SetActive(true);
+        listMedium.SetActive(false);
+        listEasy.SetActive(false);
+    }
+
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        listEasy.SetActive(false);
+        listMedium.SetActive(false);
+        listHard.SetActive(false);
+    }
 }
